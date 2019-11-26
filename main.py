@@ -1,30 +1,29 @@
 import sys
 
-#Hola
-
-clients = 'pablo,ricardo,'
+clients = ['pablo', 'ricardo']
 
 
 def create_client(client_name):
     global clients
 
-    if client_name + ',' not in clients: #cambio desde comentarios de clase
-        clients += client_name
-        _add_comma()
+    if client_name not in clients:
+        clients.append(client_name)
     else:
         print('Client already is in the clients\'s list')
 
 
 def list_clients():
     global clients
-    print(clients)
+    for idx, client in enumerate(clients):
+        print('{}: {}'.format(idx, client))
 
 
 def update_client(client_name, updated_client_name):
     global clients
 
     if client_name in clients:
-        clients = clients.replace(client_name + ',', updated_client_name + ',')
+        index = clients.index(client_name)
+        clients[index] = updated_client_name
     else:
         print('Client is not in clients list')
 
@@ -33,23 +32,18 @@ def delete_client(client_name):
     global clients
 
     if client_name in clients:
-        clients = clients.replace(client_name + ',', '')
+        clients.remove(client_name)
     else:
         print('Client is not in clients list')
 
 
 def search_client(client_name):
-    clients_list = clients.split(',')
-    for client in clients_list:
+    global clients
+    for client in clients:
         if client != client_name:
             continue
         else:
             return True
-
-
-def _add_comma():
-    global clients
-    clients += ','
 
 
 def _print_welcome():
