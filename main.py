@@ -1,20 +1,23 @@
-import sys
+import csv
+import os
 
-clients = [
-    {
-        'name': 'Pablo',
-        'company': 'Google',
-        'email': 'pablo@google.com',
-        'position': 'Software engineer'
-    },
-    {
-        'name': 'Ricardo',
-        'company': 'Facebook',
-        'email': 'ricardo@facebook.com',
-        'position': 'Data engineer'
-    }
-]
 
+CLIENT_TABLE = 'C:\\Users\\feran\\OneDrive\\Documentos\\GitHub\\Curso_Practico_Python_Platzi\\clients.csv'
+CLIENT_SCHEMA = ['name', 'company', 'email', 'position']
+clients = []
+
+def _initialize_clients_from_storage():
+    with open(CLIENT_TABLE, mode='r') as f:
+        reader = csv.DictReader(f, fieldnames=CLIENT_SCHEMA)
+        for row in reader:
+            clients.append(row)
+    f.close()
+
+def _save_clients_to_storage():
+    with open(CLIENT_TABLE, mode='w') as f:
+        writer = csv.DictWriter(f, fieldnames=CLIENT_SCHEMA)
+        writer.writerows(clients)
+        f.close()
 
 def _get_client_field(field_name):
     field = None
@@ -36,6 +39,7 @@ def create_client(client):
 
 def list_clients():
     global clients
+    print('uid | name | company | email | position')
     for idx, client in enumerate(clients):
         print('{uid} | {name} | {company} | {email} | {position}'.format(
             uid=idx,
@@ -96,6 +100,7 @@ def _print_welcome():
 
 
 if __name__ == '__main__':
+    _initialize_clients_from_storage()
     _print_welcome()
     command = input()
     command = command.upper()
@@ -125,3 +130,6 @@ if __name__ == '__main__':
             print('The client: {} is not in our client\'s list'.format(client_name))
     else:
         print('Invalid command')
+
+
+    _save_clients_to_storage()
